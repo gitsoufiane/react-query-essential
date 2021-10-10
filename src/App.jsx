@@ -9,7 +9,7 @@ const fetchPokemon = async () => {
 };
 
 function App() {
-  const { isSuccess, isLoading, isError, error, data } = useQuery("pokemon", fetchPokemon, {
+  const { isSuccess, isLoading, isError, error, data, isFetching } = useQuery("pokemon", fetchPokemon, {
     refetchOnWindowFocus: false,
   });
   if (isLoading) return "Loading....";
@@ -20,6 +20,7 @@ function App() {
         {data.map((pokemon) => (
           <div>{pokemon.name}</div>
         ))}
+        {isFetching ? "Fetching..." : null}
       </div>
     );
   }
