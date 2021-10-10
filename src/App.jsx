@@ -9,10 +9,20 @@ const fetchPokemon = async () => {
 };
 
 function App() {
-  const { isSuccess, isLoading, isError, error, data } = useQuery("pokemon", fetchPokemon);
+  const { isSuccess, isLoading, isError, error, data } = useQuery("pokemon", fetchPokemon, {
+    refetchOnWindowFocus: false,
+  });
   if (isLoading) return "Loading....";
   if (isError) return <div>{error.message}</div>;
-  return <div>{isSuccess && data.map((pokemon) => <div>{pokemon.name}</div>)}</div>;
+  if (isSuccess) {
+    return (
+      <div>
+        {data.map((pokemon) => (
+          <div>{pokemon.name}</div>
+        ))}
+      </div>
+    );
+  }
 }
 
 export default App;
