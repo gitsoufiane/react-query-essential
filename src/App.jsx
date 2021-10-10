@@ -10,7 +10,8 @@ const fetchPokemon = async () => {
 
 function App() {
   const { isSuccess, isLoading, isError, error, data, isFetching } = useQuery("pokemon", fetchPokemon, {
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
+    staleTime: 5000, // query considered fresh for 5 seconds
   });
   if (isLoading) return "Loading....";
   if (isError) return <div>{error.message}</div>;
