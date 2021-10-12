@@ -1,49 +1,21 @@
 import React from "react";
-import { useQuery } from "react-query";
-import axios from "axios";
-
-const POKEMON_API = "https://pokeapi.co/api/v2/pokemon";
-
-const fetchPokemon = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  return axios.get(POKEMON_API).then((res) => res.data.results);
-};
-
-const usePokemon = () => {
-  return useQuery(['pokemon'], fetchPokemon, {
-    refetchOnWindowFocus: true,
-    staleTime: 5000, // query considered fresh for 5 seconds
-    cacheTime: 2000, // daata remain in cache for N seconds or Infinity or 0
-  });
-}
-function Pokemon() {
-  const { isSuccess, isLoading, isError, error, data, isFetching } = usePokemon()
-  if (isLoading) return "Loading....";
-  if (isError) return <div>{error.message}</div>;
-  if (isSuccess) {
-    return (
-      <div>
-        {data.map((pokemon) => (
-          <div>{pokemon.name}</div>
-        ))}
-        {isFetching ? "Fetching..." : null}
-      </div>
-    );
-  }
-}
+import { Pokemon, usePokemon } from "./components/Pokemon";
+import { Berry } from "./components/Berry";
 
 function Count() {
-  const { isSuccess,  data } = usePokemon()
+  const { isSuccess, data } = usePokemon();
 
-  return <h3>Pokemon Count : {isSuccess && data.length}</h3>
+  return <h3>Pokemon Count : {isSuccess && data.length}</h3>;
 }
 function App() {
   const [show, setShow] = React.useState(true);
   return (
     <>
       <button onClick={() => setShow(!show)}>show</button>
-      <Count/>
+      <Count />
       {show ? <Pokemon queryKey='pokemon1' /> : null}
+      <div>--------------------------------------</div>
+      {show ? <Berry queryKey='pokemon1' /> : null}
     </>
   );
 }
