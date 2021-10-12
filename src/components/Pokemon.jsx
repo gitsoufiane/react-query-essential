@@ -14,6 +14,7 @@ export const usePokemon = (pokemonName = "") => {
     refetchOnWindowFocus: true,
     staleTime: 5000, // query considered fresh for 5 seconds
     cacheTime: 2000, // daata remain in cache for N seconds or Infinity or 0
+    enabled: !!pokemonName,
   });
 };
 
@@ -38,4 +39,5 @@ export function Pokemon({ pokemonName }) {
       </>
     );
   }
+  return null;
 }
