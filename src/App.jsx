@@ -9,13 +9,15 @@ function Count() {
 }
 function App() {
   const [show, setShow] = React.useState(true);
+  const [name, setName] = React.useState("");
   return (
     <>
       <button onClick={() => setShow(!show)}>show</button>
+      <input type='text' value={name} onChange={(e) => setName(e.target.value)} />
       <Count />
-      {show ? <Pokemon queryKey='pokemon1' /> : null}
+      {show ? <Pokemon pokemonName={name} /> : null}
       <div>--------------------------------------</div>
-      {show ? <Berry queryKey='pokemon1' /> : null}
+      {show ? <Berry /> : null}
     </>
   );
 }

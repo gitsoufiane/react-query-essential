@@ -4,33 +4,38 @@ import axios from "axios";
 
 const POKEMON_API = "https://pokeapi.co/api/v2/pokemon";
 
-
-const fetchPokemon = async () => {
+const fetchPokemon = async (pokemonName) => {
   await new Promise((resolve) => setTimeout(resolve, 3000));
-  return axios.get(POKEMON_API).then((res) => res.data.results);
+  return axios.get(`${POKEMON_API}/${pokemonName}`).then((res) => res.data);
 };
 
-
-export const usePokemon = () => {
-  return useQuery(['pokemon'], fetchPokemon, {
+export const usePokemon = (pokemonName = "") => {
+  return useQuery(["pokemon", pokemonName], () => fetchPokemon(pokemonName), {
     refetchOnWindowFocus: true,
     staleTime: 5000, // query considered fresh for 5 seconds
     cacheTime: 2000, // daata remain in cache for N seconds or Infinity or 0
   });
-}
+};
 
-export function Pokemon() {
-  const { isSuccess, isLoading, isError, error, data, isFetching } = usePokemon()
+export function Pokemon({ pokemonName }) {
+  const query = usePokemon(pokemonName);
+  const { isSuccess, isLoading, isError, error, data, isFetching } = query;
   if (isLoading) return "Loading....";
   if (isError) return <div>{error.message}</div>;
   if (isSuccess) {
     return (
-      <div>
-        {data.map((pokemon) => (
-          <div>{pokemon.name}</div>
-        ))}
+      <>
+        {pokemonName === "" ? (
+          <div>
+            {data.results.map((pokemon) => (
+              <div>{pokemon.name}</div>
+            ))}
+          </div>
+        ) : (
+          <img src={data?.sprites?.front_default} />
+        )}
         {isFetching ? "Fetching..." : null}
-      </div>
+      </>
     );
   }
 }
