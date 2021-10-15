@@ -13,8 +13,10 @@ export const usePokemon = (pokemonName = "") => {
   return useQuery(["pokemon", pokemonName], () => fetchPokemon(pokemonName), {
     refetchOnWindowFocus: true,
     staleTime: 5000, // query considered fresh for 5 seconds
-    cacheTime: 2000, // daata remain in cache for N seconds or Infinity or 0
-    enabled: !!pokemonName,
+    cacheTime: 2000, // data remain in cache for N seconds or Infinity or 0
+    enabled: !!pokemonName, // enable or disable a query
+    retry: 1,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 };
 
