@@ -1,12 +1,23 @@
 import React from "react";
 import { useQuery } from "react-query";
-import axios from "axios";
+import axios, { CancelToken } from "axios";
 
 const POKEMON_API = "https://pokeapi.co/api/v2/pokemon";
 
 const fetchPokemon = async (pokemonName) => {
   await new Promise((resolve) => setTimeout(resolve, 3000));
-  return axios.get(`${POKEMON_API}/${pokemonName}`).then((res) => res.data);
+  const source = CancelToken.source();
+  const promise = new Promise((resolve) => setTimeout(resolve, 1000))
+    .then(() => {
+      return axios.get(`${POKEMON_API}/${pokemonName}`, {
+        cancelToken: source.token,
+      });
+    })
+    .then((res) => res.data);
+
+  promise.cancel = () => source.cancel("Query was Candeled by React Query");
+
+  return promise;
 };
 
 export const usePokemon = (pokemonName = "") => {
