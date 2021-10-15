@@ -1,7 +1,7 @@
 import React from "react";
 import { Pokemon, usePokemon } from "./components/Pokemon";
 import { Berry } from "./components/Berry";
-
+import { Post } from "./components/Post";
 function Count() {
   const { isSuccess, data } = usePokemon();
 
@@ -18,6 +18,7 @@ function App() {
       {show ? <Pokemon pokemonName={name} /> : null}
       <div>--------------------------------------</div>
       {show ? <Berry /> : null}
+      <Post />
     </>
   );
 }
