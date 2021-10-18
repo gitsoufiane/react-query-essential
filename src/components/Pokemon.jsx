@@ -22,8 +22,8 @@ const fetchPokemon = async (pokemonName) => {
 
 export const usePokemon = (pokemonName = "") => {
   return useQuery(["pokemon", pokemonName], () => fetchPokemon(pokemonName), {
-    refetchOnWindowFocus: true,
-    staleTime: 5000, // query considered fresh for 5 seconds
+    refetchOnWindowFocus: false, // automatically refetch on windows focus
+    staleTime: 5000, // query considered fresh for 5 seconds , Infinity
     cacheTime: 2000, // data remain in cache for N seconds or Infinity or 0
     enabled: !!pokemonName, // enable or disable a query
     retry: 1,
